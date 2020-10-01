@@ -1,0 +1,15 @@
+#mysql
+MYSQL_ROOT_PASSWORD=password
+MYSQL_USER=jxwaf
+MYSQL_PASSWORD=password
+
+#super
+SUPER_USER=root
+SUPER_PASSWORD=password
+SUPER_EMAIL=admin@admin.com
+
+#server-user
+USER_API_KEY=test123
+USER_NAME=test1@test.com
+USER_PASSWORD=e10adc3949ba59abbe56e057f20f883e
+USER_API_PASSWORD=test

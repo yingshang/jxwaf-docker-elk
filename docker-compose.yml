@@ -1,0 +1,125 @@
+version: '3.5'
+services:
+  es01:
+    build:
+      context: es
+      dockerfile: Dockerfile
+    image: elasticsearch
+    user: root
+    privileged: true
+    volumes:
+      - type: bind
+        source: ./config/elasticsearch.yml
+        target: /etc/elasticsearch/elasticsearch.yml
+      - ./data/elasticsearch/data1:/var/lib/elasticsearch
+    ports:
+      - 9200:9200
+
+    networks:
+      app_net:
+        ipv4_address: 172.200.200.240
+
+  logstash:
+    build:
+      context: logstash
+      dockerfile: Dockerfile
+    image: logstash
+    volumes:
+      - type: bind
+        source: ./config/logstash.conf
+        target: /opt/logstash.conf
+
+    networks:
+      app_net:
+        ipv4_address: 172.200.200.230
+
+  kibana:
+    build:
+      context: kibana
+      dockerfile: Dockerfile
+    image: kibana
+    ports:
+      - 5601:5601
+    volumes:
+      - type: bind
+        source: ./config/kibana.yml
+        target: /etc/kibana/kibana.yml
+    networks:
+      app_net:
+        ipv4_address: 172.200.200.220
+
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    image: server
+    networks:
+      app_net:
+        ipv4_address: 172.200.200.100
+    ports:
+      - 8000:80
+    environment:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
+      SUPER_USER:
+      SUPER_PASSWORD:
+      SUPER_EMAIL:
+      USER_API_KEY:
+      USER_NAME:
+      USER_PASSWORD:
+      USER_API_PASSWORD:
+
+
+
+  db:
+    image: mysql:5.7
+    networks:
+      app_net:
+        ipv4_address: 172.200.200.110
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: jxwaf
+      MYSQL_USER: 
+      MYSQL_PASSWORD:
+    user: root
+    privileged: true
+
+
+  jxwaf:
+    build:
+      context: jxwaf
+      dockerfile: Dockerfile
+    image: jxwaf
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      USER_API_KEY:
+      USER_API_PASSWORD:
+
+    networks:
+      app_net:
+        ipv4_address: 172.200.200.120
+
+
+  vul:
+    image: citizenstig/nowasp
+    networks:
+      app_net:
+        ipv4_address: 172.200.200.10
+
+
+
+
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.200.200.0/24"
+

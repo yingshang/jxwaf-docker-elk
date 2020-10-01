@@ -1,0 +1,13 @@
+{
+    "waf_api_key": "abc111",
+    "waf_api_password": "efg222",
+    "waf_update_website": "http://172.200.200.100/waf_update",
+    "waf_monitor_website": "http://172.200.200.100/waf_monitor",
+    "waf_local":"false",
+    "server_info":"|7860a795dc2e",
+    "waf_node_monitor":"true",
+    "aes_enc_key":"4214eca9ba837f05",
+    "aes_enc_iv":"ae558becd717b284",
+    "aliyun_access_id":"",
+    "aliyun_access_secret":""
+}
